@@ -1,0 +1,52 @@
+DELETE FROM USER_INFO WHERE USER_ID="001";
+DELETE FROM ATTENDANCE_INFO WHERE USER_ID="001";
+
+INSERT INTO USER_INFO(
+    USER_ID
+    ,EMAIL_ADDRESS
+    ,PASSWORD
+    ,CREATE_USER
+    ,UPDATE_USER
+    ,CREATE_DATE_TIME
+    ,UPDATE_DATE_TIME
+    )
+    VALUES(
+    "001",
+    "test@test.com",
+    "password",
+    "test",
+    "test",
+    now(),
+    now()
+    );
+
+INSERT INTO ATTENDANCE_INFO(
+    USER_ID
+    ,SCHEDULED_ATTENDANCE_DATE
+    ,SCHEDULED_LEAVING_DATE
+    ,ACHIEVED_ATTENDANCE_DATE
+    ,ACHIEVED_LEAVING_DATE
+    ,SCHEDULED_ATTENDANCE_TIME
+    ,SCHEDULED_LEAVING_TIME
+    ,ACHIEVED_ATTENDANCE_TIME
+    ,ACHIEVED_LEAVING_TIME
+    ,CREATE_USER
+    ,UPDATE_USER
+    ,CREATE_DATE_TIME
+    ,UPDATE_DATE_TIME
+    )
+    VALUES(
+    "001",
+    "2022-01-01",
+    "2022-01-01",
+    null,
+    null,
+    "10:00",
+    "10:00",
+    null,
+    null,
+    "test",
+    "test",
+    now(),
+    now()
+    );

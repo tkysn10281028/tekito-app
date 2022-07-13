@@ -1,19 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
-	"time"
 )
 
-func main()  {
-	// staticDir := "./dist"
-	staticDir := "./front/dist"
+func main() {
 
 	server := http.Server{
 		Addr: ":8080",
 	}
-	http.Handle("/", http.FileServer(http.Dir(staticDir)))
-	fmt.Println(time.Now().String() + " : Server Listening..." + "\n")
+	http.Handle("/", http.FileServer(http.Dir(GetStaticDir())))
+	http.HandleFunc("/api/v1/postAchievedAttendanceInfo", postAchievedAttendanceInfo)
+	http.HandleFunc("/api/v1/getAttendanceInfo", getAttendanceInfoByUserIdAndDate)
+	LogFirstAccess()
 	server.ListenAndServe()
 }
