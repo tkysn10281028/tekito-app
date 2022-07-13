@@ -22,5 +22,7 @@ func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
 	LogPostForm(r)
 	userId := r.PostFormValue("userId")
 	date := r.PostFormValue("date")
-	data.GetAttendanceInfoByUserIdAndDate(userId, date)
+    output := data.GetAttendanceInfoByUserIdAndDate(userId, date)
+	w.Header().Set("Content-Type","application/json")
+	w.Write(output)
 }

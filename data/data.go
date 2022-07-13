@@ -2,12 +2,13 @@ package data
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"os/user"
 
 	_ "github.com/go-sql-driver/mysql"
 )
-type AttendanceInfo struct{
+type AttendanceInfoModel struct{
 	scheduledAttendanceDate sql.NullString
 	scheduledLeavingDate sql.NullString
 	achievedAttendanceDate sql.NullString
@@ -16,6 +17,17 @@ type AttendanceInfo struct{
 	scheduledLeavingTime sql.NullString
 	achievedAttendanceTime sql.NullString
 	achievedLeavingTime sql.NullString
+}
+
+type AttendanceInfoJson struct{
+	ScheduledAttendanceDate string `json:"scheduledAttendanceDate"`
+	ScheduledLeavingDate string `json:"scheduledLeavingDate"`
+	AchievedAttendanceDate string `json:"achievedAttendanceDate"`
+	AchievedLeavingDate string `json:"achievedLeavingDate"`
+	ScheduledAttendanceTime string `json:"scheduledAttendanceTime"`
+	ScheduledLeavingTime string `json:"scheduledLeavingTime"`
+	AchievedAttendanceTime string `json:"achievedAttendanceTime"`
+	AchievedLeavingTime string `json:"achievedLeavingTime"`
 }
 
 
@@ -37,31 +49,38 @@ func init() {
 	}
 }
 
-func GetAttendanceInfoByUserIdAndDate(userId string,date string){
-	// var scheduledAttendanceDate string
-	// var scheduledLeavingDate string
-	// var achievedAttendanceDate string
-	// var achievedLeavingDate string
-	// var scheduledAttendanceTime string
-	// var scheduledLeavingTime string
-	// var achievedAttendanceTime string
-	// var achievedLeavingTime string
-	info := AttendanceInfo{}
+func GetAttendanceInfoByUserIdAndDate(userId string,date string) ([]byte){
+	infoModel := AttendanceInfoModel{}
 	statement := GetAttendanceInfoByUserIdAndDateSQL()
 	err := Db.QueryRow(statement,userId,date,date).Scan(
 		&userId,
-		&info.scheduledAttendanceDate,
-		&info.scheduledLeavingDate,
-		&info.achievedAttendanceDate,
-		&info.achievedLeavingDate,
-		&info.scheduledAttendanceTime,
-		&info.scheduledLeavingTime,
-		&info.achievedAttendanceTime,
-		&info.achievedLeavingTime)
+		&infoModel.scheduledAttendanceDate,
+		&infoModel.scheduledLeavingDate,
+		&infoModel.achievedAttendanceDate,
+		&infoModel.achievedLeavingDate,
+		&infoModel.scheduledAttendanceTime,
+		&infoModel.scheduledLeavingTime,
+		&infoModel.achievedAttendanceTime,
+		&infoModel.achievedLeavingTime)
 	if err !=nil{
 		panic(err)
 	}
-	fmt.Println(info)
+	fmt.Println(infoModel)
+	attendanceInfoJson := AttendanceInfoJson{
+		ScheduledAttendanceDate : infoModel.scheduledAttendanceDate.String,
+		ScheduledLeavingDate:  infoModel.scheduledLeavingDate.String,
+		AchievedAttendanceDate: infoModel.achievedAttendanceDate.String,
+		AchievedLeavingDate: infoModel.scheduledLeavingDate.String,
+		ScheduledAttendanceTime: infoModel.scheduledAttendanceTime.String,
+		ScheduledLeavingTime: infoModel.scheduledLeavingTime.String,
+		AchievedAttendanceTime: infoModel.achievedAttendanceTime.String,
+		AchievedLeavingTime: infoModel.achievedLeavingTime.String,
+	}
+	output , err := json.MarshalIndent(&attendanceInfoJson,"","\t\t")
+	if err != nil{
+		panic(err)
+	}
+	return output
 }
 
 func UpdateAchievedAttendanceInfo(isAttend bool, achievedAttendanceDate string, achievedAttendanceTime string, userId string) {
