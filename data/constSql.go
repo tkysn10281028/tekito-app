@@ -25,6 +25,14 @@ func GetAttendanceInfoByUserIdAndDateSQL() (stmt string) {
 		ACHIEVED_LEAVING_TIME
 	FROM
 		ATTENDANCE_INFO
-	WHERE SCHEDULED_ATTENDANCE_DATE = ?
+		WHERE
+        USER_ID = ?
+    AND 
+    NOT (
+        SCHEDULED_ATTENDANCE_DATE != ?
+        AND
+        SCHEDULED_LEAVING_DATE != ?
+    )
+
 	`
 }

@@ -48,7 +48,7 @@ func GetAttendanceInfoByUserIdAndDate(userId string,date string){
 	// var achievedLeavingTime string
 	info := AttendanceInfo{}
 	statement := GetAttendanceInfoByUserIdAndDateSQL()
-	err := Db.QueryRow(statement,date).Scan(
+	err := Db.QueryRow(statement,userId,date,date).Scan(
 		&userId,
 		&info.scheduledAttendanceDate,
 		&info.scheduledLeavingDate,
