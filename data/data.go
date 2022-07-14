@@ -83,7 +83,9 @@ func GetAttendanceInfoByUserIdAndDate(userId string,date string) ([]byte){
 	return output
 }
 
-func UpdateAchievedAttendanceInfo(isAttend bool, achievedAttendanceDate string, achievedAttendanceTime string, userId string) {
+func UpdateAchievedAttendanceInfo(isAttend bool, achievedAttendanceDate string, achievedAttendanceTime string, userId string,attendanceinfo AttendanceInfoJson) {
+	
+	
 	statement := UpdateAttendanceInfoByUserIdSQL()
 	stmt, err := Db.Prepare(statement)
 	if err != nil {

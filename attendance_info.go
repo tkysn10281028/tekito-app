@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"tekito-app/data"
@@ -14,7 +16,11 @@ func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
 	achievedAttendanceDate := r.PostFormValue("achievedAttendanceDate")
 	achievedAttendanceTime := r.PostFormValue("achievedAttendanceTime")
 	userId := r.PostFormValue("userId")
-	data.UpdateAchievedAttendanceInfo(isAttendBool, achievedAttendanceDate, achievedAttendanceTime, userId)
+	attendanceInfoByte := []byte(r.PostFormValue("attendanceInfo"))
+	var attendanceInfo data.AttendanceInfoJson
+	json.Unmarshal(attendanceInfoByte,&attendanceInfo)
+	fmt.Println(attendanceInfo)
+	data.UpdateAchievedAttendanceInfo(isAttendBool, achievedAttendanceDate, achievedAttendanceTime, userId,attendanceInfo)
 }
 
 func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
