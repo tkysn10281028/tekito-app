@@ -6,7 +6,9 @@ func UpdateAttendanceInfoByUserIdSQL() (stmt string) {
 	ATTENDANCE_INFO 
 	SET
 		ACHIEVED_ATTENDANCE_DATE = ?,
-		ACHIEVED_ATTENDANCE_TIME = ?
+		ACHIEVED_ATTENDANCE_TIME = ?,
+		ACHIEVED_LEAVING_DATE = ?,
+		ACHIEVED_LEAVING_TIME = ?
 	WHERE USER_ID = ?
 	`
 }
@@ -34,5 +36,43 @@ func GetAttendanceInfoByUserIdAndDateSQL() (stmt string) {
         SCHEDULED_LEAVING_DATE != ?
     )
 
+	`
+}
+
+
+func InsertAttendanceInfo()(stmt string){
+	return`
+	INSERT 
+		INTO ATTENDANCE_INFO(	
+			USER_ID
+			,SCHEDULED_ATTENDANCE_DATE
+			,SCHEDULED_LEAVING_DATE
+			,SCHEDULED_ATTENDANCE_TIME
+			,SCHEDULED_LEAVING_TIME
+			,ACHIEVED_ATTENDANCE_DATE
+			,ACHIEVED_LEAVING_DATE
+			,ACHIEVED_ATTENDANCE_TIME
+			,ACHIEVED_LEAVING_TIME
+			,CREATE_USER
+			,UPDATE_USER
+			,CREATE_DATE_TIME
+			,UPDATE_DATE_TIME
+		)
+		VALUES
+		(
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		now(),
+		now()
+		);
 	`
 }

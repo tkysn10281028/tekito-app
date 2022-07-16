@@ -83,18 +83,41 @@ func GetAttendanceInfoByUserIdAndDate(userId string,date string) ([]byte){
 	return output
 }
 
-func UpdateAchievedAttendanceInfo(isAttend bool, achievedAttendanceDate string, achievedAttendanceTime string, userId string,attendanceinfo AttendanceInfoJson) {
-	
-	
-	statement := UpdateAttendanceInfoByUserIdSQL()
-	stmt, err := Db.Prepare(statement)
+func UpdateAchievedAttendanceInfo(isAttend bool, achievedAttendanceDate string, achievedAttendanceTime string,
+	 userId string,attendanceinfo AttendanceInfoJson) (bool){
+	if(isAttend){
+		if attendanceinfo.ScheduledAttendanceDate != "" || attendanceinfo.ScheduledAttendanceTime != ""{
+			statement := UpdateAttendanceInfoByUserIdSQL()
+			stmt, err := Db.Prepare(statement)
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
-	result, err := stmt.Exec(achievedAttendanceDate, achievedAttendanceTime, userId)
+	result, err := stmt.Exec(achievedAttendanceDate, achievedAttendanceTime, nil,nil,userId)
 	if err != nil {
 		fmt.Println(result)
 		panic(err)
 	}
+	return true
+}else{
+	return false
+}
+	}else{
+		if attendanceinfo.ScheduledAttendanceDate != "" || attendanceinfo.ScheduledAttendanceTime != ""{
+			statement := UpdateAttendanceInfoByUserIdSQL()
+			stmt, err := Db.Prepare(statement)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(nil,nil,achievedAttendanceDate, achievedAttendanceTime, userId)
+	if err != nil {
+		fmt.Println(result)
+		panic(err)
+	}
+	return true
+}else{
+	return false
+}
+}
 }

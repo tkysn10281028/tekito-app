@@ -18,9 +18,15 @@ func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
 	userId := r.PostFormValue("userId")
 	attendanceInfoByte := []byte(r.PostFormValue("attendanceInfo"))
 	var attendanceInfo data.AttendanceInfoJson
-	json.Unmarshal(attendanceInfoByte,&attendanceInfo)
+	json.Unmarshal(attendanceInfoByte, &attendanceInfo)
 	fmt.Println(attendanceInfo)
-	data.UpdateAchievedAttendanceInfo(isAttendBool, achievedAttendanceDate, achievedAttendanceTime, userId,attendanceInfo)
+	isOK := data.UpdateAchievedAttendanceInfo(isAttendBool, achievedAttendanceDate,
+		achievedAttendanceTime, userId, attendanceInfo)
+	if isOK {
+		w.WriteHeader(http.StatusNoContent)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+	}
 }
 
 func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +34,7 @@ func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
 	LogPostForm(r)
 	userId := r.PostFormValue("userId")
 	date := r.PostFormValue("date")
-    output := data.GetAttendanceInfoByUserIdAndDate(userId, date)
-	w.Header().Set("Content-Type","application/json")
+	output := data.GetAttendanceInfoByUserIdAndDate(userId, date)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(output)
 }
