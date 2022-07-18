@@ -2,25 +2,23 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"tekito-app/data"
+	"tekito-app/utils"
 )
 
 func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	LogPostForm(r)
-	isAttend := r.PostFormValue("isAttend")
-	isAttendBool, _ := strconv.ParseBool(isAttend)
+	utils.LogPostForm(r)
+	isAttend, _ := strconv.ParseBool(r.PostFormValue("isAttend"))
 	achievedAttendanceDate := r.PostFormValue("achievedAttendanceDate")
 	achievedAttendanceTime := r.PostFormValue("achievedAttendanceTime")
 	userId := r.PostFormValue("userId")
 	attendanceInfoByte := []byte(r.PostFormValue("attendanceInfo"))
 	var attendanceInfo data.AttendanceInfoJson
 	json.Unmarshal(attendanceInfoByte, &attendanceInfo)
-	fmt.Println(attendanceInfo)
-	isOK := data.UpdateAchievedAttendanceInfo(isAttendBool, achievedAttendanceDate,
+	isOK := data.UpdateAchievedAttendanceInfo(isAttend, achievedAttendanceDate,
 		achievedAttendanceTime, userId, attendanceInfo)
 	if isOK {
 		w.WriteHeader(http.StatusNoContent)
@@ -31,7 +29,7 @@ func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
 
 func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	LogPostForm(r)
+	utils.LogPostForm(r)
 	userId := r.PostFormValue("userId")
 	date := r.PostFormValue("date")
 	output := data.GetAttendanceInfoByUserIdAndDate(userId, date)
