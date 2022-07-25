@@ -14,8 +14,9 @@ func main() {
 	http.HandleFunc("/api/v1/postAchievedAttendanceInfo", postAchievedAttendanceInfo)
 	http.HandleFunc("/api/v1/getAttendanceInfo", getAttendanceInfoByUserIdAndDate)
 	http.HandleFunc("/api/v1/getAttendanceInfoList", getAttendanceInfoList)
-	http.HandleFunc("/api/v1/postScheduledAttendanceInfo",postScheduledAttendanceInfo)
-
+	http.HandleFunc("/api/v1/postScheduledAttendanceInfo", postScheduledAttendanceInfo)
+	http.HandleFunc("/api/v1/login", login)
+	http.HandleFunc("/api/v1/whoami",checkJwtToken)
 	utils.LogFirstAccess()
 	server.ListenAndServe()
 }

@@ -47,6 +47,8 @@ func GetAttendanceInfoListSQL() (stmt string) {
 		LEAVE_FLG
 	FROM
 		ATTENDANCE_INFO
+	WHERE 
+		USER_ID = ?
 	`
 }
 

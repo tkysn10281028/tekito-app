@@ -5,10 +5,10 @@ import (
 	"fmt"
 )
 
-func GetAttendanceInfoList() ([]byte) {
+func GetAttendanceInfoList(userId string) ([]byte) {
 	statement := GetAttendanceInfoListSQL()
 	attendanceInfoList := []AttendanceInfoJson{}
-	rows, err := Db.Query(statement)
+	rows, err := Db.Query(statement,userId)
 	if err != nil {
 		panic(err)
 	}

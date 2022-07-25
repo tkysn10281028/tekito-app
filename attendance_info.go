@@ -9,6 +9,10 @@ import (
 )
 
 func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
+	if err:= data.WhoAmI(r);err !=nil{
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
 	r.ParseForm()
 	utils.LogPostForm(r)
 	isAttend, _ := strconv.ParseBool(r.PostFormValue("isAttend"))
@@ -28,6 +32,10 @@ func postAchievedAttendanceInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func getAttendanceInfoByUserIdAndDate(w http.ResponseWriter, r *http.Request) {
+	if err:= data.WhoAmI(r);err !=nil{
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
 	r.ParseForm()
 	utils.LogPostForm(r)
 	userId := r.PostFormValue("userId")

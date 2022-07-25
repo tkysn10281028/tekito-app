@@ -34,9 +34,9 @@ func init() {
 	usr ,_ := user.Current()
 	var dbConf string
 	if(usr.HomeDir =="/home/ec2-user"){
-		dbConf = "myapp:admin@tcp(10.0.2.10:3306)/myapp?charset=utf8mb4"
+		dbConf = "myapp:@Pleasure1@tcp(10.0.2.10:3306)/myapp?charset=utf8mb4"
 	}else{
-		dbConf =  "myapp:admin@/myapp"
+		dbConf =  "myapp:@Pleasure1@/myapp"
 	}
 	var err error
 	Db, err = sql.Open("mysql", dbConf)
