@@ -89,3 +89,45 @@ func UpsertScheduledAttendanceInfo()(stmt string)  {
 		SCHEDULED_LEAVING_TIME = ?
 	`
 }
+
+
+func postFileSQL()(string){
+	return`
+	INSERT INTO 
+		UPLOADED_FILE_INFO
+   		(
+   			FILE_NAME,
+   			FILE_CONTENT,
+   			MIME_TYPE,
+			USER_ID,
+			POSTED_DATE
+		)
+   		VALUES(
+			?,
+   			?,
+			?,
+			?,
+			?
+		)
+	`
+}
+
+func getFileDataByUserIdSQL() (string) {
+	return `
+	SELECT
+		FILE_INFO_ID,
+		FILE_NAME,	
+		FILE_CONTENT,
+		MIME_TYPE,
+		USER_ID,
+		POSTED_DATE
+	FROM
+		UPLOADED_FILE_INFO
+	WHERE
+		USER_ID = ?
+	AND
+		POSTED_DATE = ?
+	ORDER BY FILE_INFO_ID DESC
+	LIMIT 10
+	`
+}

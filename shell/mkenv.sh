@@ -14,7 +14,6 @@ echo sending files to www.tekito-app.com...
 scp -r -i ~/tkysn1028.pem ~/tekito-app/front/dist ec2-user@35.76.152.13:~/
 scp -i ~/tkysn1028.pem ~/tekito-app/tekito-app ec2-user@35.76.152.13:~/
 scp -i ~/tkysn1028.pem ~/desktop/mybatchTest.jar ec2-user@35.76.152.13:~/
-
 echo sending file succeeded.
 break
 fi
